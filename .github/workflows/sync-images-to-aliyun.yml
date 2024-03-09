@@ -1,8 +1,6 @@
 name: Sync images to Aliyun
 on:
   workflow_dispatch:
-  schedule:
-  - cron: '0 0 * * *'
   push:
     paths:
     - 'example/variables.yaml'
