@@ -1,8 +1,6 @@
 name: Delete Old Workflows
 on:
   workflow_call:
-  schedule:
-  - cron: 0 3 * * *
   workflow_dispatch:
     inputs:
       retain_days:
