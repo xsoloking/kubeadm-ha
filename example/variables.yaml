@@ -25,22 +25,22 @@
 # # CentOS yum源仓库
 # # 基础软件源
 # # Kylin操作系统使用 https://update.cs2c.com.cn/NS/V10/V10SP2/os/adv/lic/base/$basearch/
-# base_yum_repo: http://mirrors.aliyun.com/centos/$releasever/os/$basearch/
-# # epel软件源（ CeontOS8默认使用：https://mirrors.aliyun.com/epel/$releasever/Everything/$basearch ）
-# # Anolis 7+ 使用: http://mirrors.aliyun.com/epel/7/$basearch
-# epel_yum_repo: http://mirrors.aliyun.com/epel/$releasever/$basearch
-# # docker-ce源 (CentOS可使用：https://mirrors.aliyun.com/docker-ce/linux/centos/$releasever/$basearch/stable )
-# docker_yum_repo: https://mirrors.aliyun.com/docker-ce/linux/centos/{{ ansible_distribution_major_version }}/$basearch/stable
+# base_yum_repo: http://mirrors.tuna.tsinghua.edu.cn/centos/$releasever/os/$basearch/
+# # epel软件源（ CeontOS8默认使用：https://mirrors.tuna.tsinghua.edu.cn/epel/$releasever/Everything/$basearch ）
+# # Anolis 7+ 使用: http://mirrors.tuna.tsinghua.edu.cn/epel/7/$basearch
+# epel_yum_repo: http://mirrors.tuna.tsinghua.edu.cn/epel/$releasever/$basearch
+# # docker-ce源 (CentOS可使用：https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/$releasever/$basearch/stable )
+# docker_yum_repo: https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/{{ ansible_distribution_major_version }}/$basearch/stable
 # # kubernetes源
-# kubernetes_yum_repo: https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-{{ ansible_architecture }}/
+# kubernetes_yum_repo:  https://mirrors.tuna.tsinghua.edu.cn/kubernetes/core:/stable:/v{{ kube_version.split('.')[0:2] | join('.') }}/rpm/
 
 # # Debian apt源仓库
 # # 基础软件源
-# base_apt_repo: deb http://mirrors.aliyun.com/{{ host_distribution | lower }}/ {{ host_distribution_release }} main restricted universe multiverse
+# base_apt_repo: deb http://mirrors.tuna.tsinghua.edu.cn/{{ host_distribution | lower }}/ {{ host_distribution_release }} main restricted universe multiverse
 # # docker-ce源
-# docker_apt_repo: "deb [arch={{ host_architecture }}] https://mirrors.aliyun.com/docker-ce/linux/{{ host_distribution | lower }} {{ host_distribution_release }} stable"
+# docker_apt_repo: "deb [arch={{ host_architecture }}] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/{{ host_distribution | lower }} {{ host_distribution_release }} stable"
 # # kubernetes源
-# kubernetes_apt_repo: deb https://mirrors.aliyun.com/kubernetes/apt kubernetes-xenial main
+# kubernetes_apt_repo: deb https://mirrors.tuna.tsinghua.edu.cn/kubernetes/core:/stable:/v{{ kube_version.split('.')[0:2] | join('.') }}/deb/ /
 
 # # 自定义hosts记录
 # # 举例：
@@ -194,7 +194,7 @@
 # # Etcd根证书过期时间（天）
 # etcd_ca_certs_expired: 36500
 # # Etcd使用的镜像
-# etcd_image: "{{ kube_image_repository }}/etcd:3.5.7-0"
+# etcd_image: "{{ kube_image_repository }}/etcd:3.5.12-0"
 # # Etcd 数据根目录
 # etcd_data_dir: "/var/lib/etcd"
 # # Etcd 每日备份时间，默认3，即凌晨3点，取值范围0-23
@@ -224,8 +224,8 @@
 # pod_infra_container_image: "{{ kube_image_repository }}/pause:3.9"
 
 # # kubernetes版本
-# kube_version: 1.27.6
-# kube_cni_version: 1.2.0
+# kube_version: 1.30.2
+# kube_cni_version: 1.4.0
 
 # # 集群内部dns域名
 # kube_dns_domain: cluster.local
@@ -361,21 +361,22 @@
 # # calico mtu
 # calico_veth_mtu: 0
 # # calico 相关镜像
-# calico_typha_image: "{{ kube_image_repository }}/calico_typha:v3.26.1"
-# calico_cni_image: "{{ kube_image_repository }}/calico_cni:v3.26.1"
-# calico_node_image: "{{ kube_image_repository }}/calico_node:v3.26.1"
-# calico_kube_controllers_image: "{{ kube_image_repository }}/calico_kube-controllers:v3.26.1"
+# calico_typha_image: "{{ kube_image_repository }}/calico_typha:v3.28.0"
+# calico_cni_image: "{{ kube_image_repository }}/calico_cni:v3.28.0"
+# calico_node_image: "{{ kube_image_repository }}/calico_node:v3.28.0"
+# calico_kube_controllers_image: "{{ kube_image_repository }}/calico_kube-controllers:v3.28.0"
 # # 设置 Felix 日志级别(debug, info, warning, error)
 # calico_felix_log_level: "warning"
 # # calicoctl image 地址
-# calicoctl_image: "{{ kube_image_repository }}/calico_ctl:v3.26.1"
+# calicoctl_image: "{{ kube_image_repository }}/calico_ctl:v3.28.0"
 
 # # 设置 flannel 后端
 # # flannel_backend: "host-gw"
 # flannel_backend: "vxlan"
+# flannel_enable_nftables: false
 # # flannel 镜像地址
-# flannel_image: "{{ kube_image_repository }}/flannel_flannel:v0.22.3"
-# flannel_cni_plugin_image: "{{ kube_image_repository }}/flannel_flannel-cni-plugin:v1.2.0"
+# flannel_image: "{{ kube_image_repository }}/flannel_flannel:v0.25.2"
+# flannel_cni_plugin_image: "{{ kube_image_repository }}/flannel_flannel-cni-plugin:v1.4.1-flannel1"
 
 # # ------------------------ #
 # # ingress-controller 相关参数配置
@@ -388,13 +389,13 @@
 # ingress_controller_tpye: nginx
 
 # # nginx-ingress-controller 镜像地址
-# nginx_ingress_image: "{{ kube_image_repository }}/ingress-nginx_controller:v1.8.1"
-# nginx_ingress_webhook_certgen_image: "{{ kube_image_repository }}/ingress-nginx_kube-webhook-certgen:v20230407"
+# nginx_ingress_image: "{{ kube_image_repository }}/ingress-nginx_controller:v1.10.1"
+# nginx_ingress_webhook_certgen_image: "{{ kube_image_repository }}/ingress-nginx_kube-webhook-certgen:v1.4.1"
 
 # # traefik默认证书过期时间（天）
 # traefik_certs_expired: 3650
 # # traefik-ingress-controller 镜像地址
-# traefik_ingress_image: "{{ kube_image_repository }}/traefik:v2.10.4"
+# traefik_ingress_image: "{{ kube_image_repository }}/traefik:v3.0.0"
 
 # # ------------------------ #
 # # kubernetes-dashboard 相关参数配置
@@ -418,7 +419,7 @@
 # metrics_server_enabled: true
 
 # # metrics-server image地址
-# metrics_server_image: "{{ kube_image_repository }}/metrics-server_metrics-server:v0.6.4"
+# metrics_server_image: "{{ kube_image_repository }}/metrics-server_metrics-server:v0.7.1"
 
 # # ------------------------ #
 # # cert-manager 相关配置
@@ -432,7 +433,7 @@
 # acme_server: https://acme-v02.api.letsencrypt.org/directory
 
 # # cert-manager 相关 image 地址
-# cert_manager_cainjector_image: "{{ kube_image_repository }}/jetstack_cert-manager-cainjector:v1.12.3"
-# cert_manager_webhook_image: "{{ kube_image_repository }}/jetstack_cert-manager-webhook:v1.12.3"
-# cert_manager_controller_image: "{{ kube_image_repository }}/jetstack_cert-manager-controller:v1.12.3"
-# cert_manager_acmesolver_image: "{{ kube_image_repository }}/jetstack_cert-manager-acmesolver::v1.12.3"
+# cert_manager_cainjector_image: "{{ kube_image_repository }}/jetstack_cert-manager-cainjector:v1.14.5"
+# cert_manager_webhook_image: "{{ kube_image_repository }}/jetstack_cert-manager-webhook:v1.14.5"
+# cert_manager_controller_image: "{{ kube_image_repository }}/jetstack_cert-manager-controller:v1.14.5"
+# cert_manager_acmesolver_image: "{{ kube_image_repository }}/jetstack_cert-manager-acmesolver::v1.14.5"
